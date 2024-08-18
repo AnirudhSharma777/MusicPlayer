@@ -42,8 +42,8 @@ const MusicCard = () => {
                             <h1 className='text-4xl text-white font-bold'>{currentTrack.name}</h1>
                             <p className='text-[18px] font-semibold text-neutral-500'>{currentTrack.artist}</p>
                         </div>
-                        <div className='p-3 mb-5'>
-                            <img className='rounded shadow' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
+                        <div className='p-3 mb-5 w-full max-h-30'>
+                            <img className='rounded shadow over-cover' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
                         </div>
                         <div className="flex items-center w-full justify-between">
                             <span className="text-white mr-3 ml-5">{formatTime(currentTime)}</span>
