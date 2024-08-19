@@ -8,7 +8,7 @@ const SongItem = ({ item, playSong, isActive }) => {
   return (
     <div
       key={item.id}
-      className={`mb-2 flex justify-between p-1 border-3 shadow-lg cursor-pointer ${isActive ? 'bg-transparent border-l-green-400 ' : 'bg-transparent'}`}
+      className={`mb-2 flex justify-between p-2 border-3 shadow-lg cursor-pointer ${isActive ? 'bg-transparent border-l-green-400 ' : 'bg-transparent'}`}
       onClick={() => playSong(item.url)}
     >
       <div className='flex flex-row gap-2 items-center'>
@@ -25,7 +25,7 @@ const SongItem = ({ item, playSong, isActive }) => {
         </div>
       </div>
       <div className={`text-neutral-300 text-[1rem]   `}>
-        <AudioDuration url={item.url}  />
+        <AudioDuration url={item.url}   />
       </div>
     </div>
   );

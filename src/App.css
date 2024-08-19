@@ -71,3 +71,31 @@
 }
 
 
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 #2d3748;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #6b7280;
+  border-radius: 10px;
+  border: 2px solid #2d3748;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #2d3748;
+  border-radius: 10px;
+}
+
+/* .mt-1 {
+  padding: 1rem; 
+}
+
+.w-full {
+  background-color: #1a202c; 
+  padding: 1rem;
+} */

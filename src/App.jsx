@@ -6,7 +6,7 @@ import Button from './components/Homepage/Button';
 import Spinner from "./components/Spinner/Spinner"
 
 function App() {
-  const { loading,setLoading, bgColor, fetchData } = useContext(DataContext);
+  const { loading, bgColor, fetchData } = useContext(DataContext);
   const [background, setBackground] = useState('#332B05'); // Default background color
 
   useEffect(() => {
@@ -15,8 +15,8 @@ function App() {
 
   useEffect(() => {
     if (bgColor.length >= 3) {
-      const gradient = `linear-gradient(135deg, ${bgColor[0]} 0%, ${'#FFA07A'} 70%, ${"rgba(255, 0,0, 0.7)"} 100%)`;
-      
+      const gradient = `linear-gradient(155deg, ${bgColor[0]}, #FFA07A 100%, rgba(255, 0, 0, 0.7) 100%)`;
+
       setBackground(gradient);
     } else if (bgColor.length > 0) {
       setBackground(bgColor[0]);
@@ -25,13 +25,6 @@ function App() {
     }
   }, [bgColor]);
 
-  const handleButtonClick = () => {
-    setLoading(true);
-    // Simulate a loading delay of 3 seconds
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000); // 3000 milliseconds = 3 seconds
-  };
 
   return (
     <div className='relative overflow-hidden' style={{ background: background }}>
@@ -39,11 +32,11 @@ function App() {
         loading ? (
           <div className='flex flex-col gap-4 h-full w-full'>
             <div className='m-14'>
-            <Spinner/>
+              <Spinner />
             </div>
-            <Button/>
+            <Button />
           </div>
-        ): (<Layout/>)
+        ) : (<Layout />)
       }
     </div>
   );

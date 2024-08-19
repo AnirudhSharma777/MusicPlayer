@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import * as fac from 'fast-average-color';
 import { FastAverageColor } from 'fast-average-color';
 import { MusicPlayerContext } from '../../context/ControlContext';
@@ -22,28 +22,29 @@ const MusicCard = () => {
         handleLoadedMetadata
     } = useContext(MusicPlayerContext);
 
-    const { setBgColor } = useContext(DataContext);
+    const { setBgColor, bgColor } = useContext(DataContext);
     const fac = new FastAverageColor();
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleComponent = () => {
+        setIsOpen(!isOpen);
+    };
 
     useEffect(() => {
         if (currentTrack && currentTrack.cover) {
             const coverImage = `https://cms.samespace.com/assets/${currentTrack.cover}`;
-    
+
             const extractColors = async () => {
                 try {
                     const color1 = await fac.getColorAsync(coverImage);
-                    // const color2 = await fac.getColorAsync(coverImage, { left: 0, top: 0, width: coverImage.width / 2, height: coverImage.height });
-                    // const color3 = await fac.getColorAsync(coverImage, { left: coverImage.width / 2, top: 0, width: coverImage.width / 2, height: coverImage.height });
-                    
-                    // Do something with color1, color2, color3
-                    setBgColor([color1.rgba, color1.rgba, color1.rgba]);
+                    setBgColor([color1.rgba]);
                 } catch (error) {
                     console.error(error);
                 }
             };
-    
+
             extractColors();
-        }    
+        }
     }, [currentTrack]);
 
 
@@ -59,8 +60,6 @@ const MusicCard = () => {
         }
     }, [audioRef, handleTimeUpdate, handleLoadedMetadata]);
 
-    // Log currentTrack to verify if it's being set correctly
-    // console.log("Current track:", currentTrack);
 
     return (
         <div className='flex justify-center'>
@@ -89,7 +88,18 @@ const MusicCard = () => {
                         </div>
                         <div className=''>
                             <div className='flex justify-between p-4 items-center'>
-                                <PiDotsThreeOutlineVertical size={28} className='text-white cursor-pointer' />
+                                <div>
+                                    <PiDotsThreeOutlineVertical size={28} className='text-white cursor-pointer relative' onClick={toggleComponent} />
+                                    {isOpen && (
+                                        <div
+                                            className='absolute bottom-16  p-4 rounded-md shadow-lg border border-white'
+                                            style={{ backgroundColor: bgColor[0] || '#333', zIndex: 10 }}
+                                        >
+                                            <p>Suffle</p>
+                                            <p>Repeat</p>
+                                        </div>
+                                    )}
+                                </div>
                                 <div className='flex flex-row justify-center gap-4 ml-4'>
                                     <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
                                         <FaStepBackward />

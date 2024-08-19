@@ -23,7 +23,7 @@ const AudioDuration = ({ url }) => {
   }, [url]);
 
   return (
-    <div>
+    <div className='p-3'>
       {duration ? (
         <p>{duration}</p>
       ) : (
