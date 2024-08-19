@@ -27,7 +27,7 @@ export const DataContextProvider = ({ children }) => {
         finally {
             setTimeout(() => {
                 setLoading(false);
-            },10000);
+            },3000);
         }
     }, [setData])
 
