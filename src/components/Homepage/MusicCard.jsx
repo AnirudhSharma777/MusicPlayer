@@ -1,10 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import * as fac from 'fast-average-color';
 import { FastAverageColor } from 'fast-average-color';
 import { MusicPlayerContext } from '../../context/ControlContext';
-import { FaStepBackward, FaStepForward, FaPause, FaPlay } from 'react-icons/fa';
-import { PiDotsThreeOutlineVertical } from "react-icons/pi";
+import {
+    FaStepBackward,
+    FaStepForward,
+    FaPause,
+    FaPlay,
+} from 'react-icons/fa';
+import { FaRepeat, FaShuffle } from "react-icons/fa6";
+import { PiDotsThreeOutlineBold } from "react-icons/pi";
 import { DataContext } from '../../context/ApiContext';
+
 
 
 const MusicCard = () => {
@@ -70,7 +76,7 @@ const MusicCard = () => {
                             <h1 className='text-4xl text-white font-bold'>{currentTrack.name}</h1>
                             <p className='text-[18px] font-semibold text-neutral-500'>{currentTrack.artist}</p>
                         </div>
-                        <div className='p-3 mb-1 w-full  h-[350px]'>
+                        <div className='p-3  w-full  h-[350px]'>
                             <img className='rounded shadow object-cover h-full ' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
                         </div>
                         <div className="flex items-center w-full justify-between">
@@ -87,20 +93,22 @@ const MusicCard = () => {
                             <span className="text-white ml-2 mr-4">{formatTime(duration)}</span>
                         </div>
                         <div className=''>
-                            <div className='flex justify-between p-4 items-center'>
+                            <div className='flex justify-between p-3 items-center'>
                                 <div>
-                                    <PiDotsThreeOutlineVertical size={28} className='text-white cursor-pointer relative' onClick={toggleComponent} />
+                                    <PiDotsThreeOutlineBold size={28} className='text-white cursor-pointer relative' onClick={toggleComponent} />
                                     {isOpen && (
                                         <div
-                                            className='absolute bottom-16  p-4 rounded-md shadow-lg border border-white'
-                                            style={{ backgroundColor: bgColor[0] || '#333', zIndex: 10 }}
+                                            className='absolute bottom-16  p-2 rounded-md shadow-lg border border-white'
+                                            style={{ zIndex: 10 }}
                                         >
-                                            <p>Suffle</p>
-                                            <p>Repeat</p>
+                                            <div className='flex flex-row gap-1'>
+                                                <button className='rounded-full shadow bg-white p-2'><FaShuffle size={18} /></button>
+                                                <button  className='rounded-full shadow bg-white p-2'> <FaRepeat size={18} /></button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
-                                <div className='flex flex-row justify-center gap-4 ml-4'>
+                                <div className='flex flex-row justify-center gap-4 ml-4 mt-4'>
                                     <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
                                         <FaStepBackward />
                                     </button>

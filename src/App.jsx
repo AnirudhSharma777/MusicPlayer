@@ -30,8 +30,9 @@ function App() {
     <div className='relative overflow-hidden' style={{ background: background }}>
       {
         loading ? (
-          <div className='flex flex-col gap-4 h-full w-full'>
-            <div className='m-14'>
+          <div className='flex flex-col gap-4 h-[100vh] w-full'>
+            <h1 className='text-center p-4 text-4xl font-bold ' style={{color:"#00DA5A"}}>Welcome To The Small Spotify</h1>
+            <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
               <Spinner />
             </div>
             <Button />

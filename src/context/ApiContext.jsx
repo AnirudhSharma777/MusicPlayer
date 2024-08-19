@@ -8,11 +8,13 @@ export const DataContextProvider = ({ children }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [bgColor, setBgColor] = useState([]);
+    const [timeOutError, setTimeOutError] = useState(false);
     
     
 
     const fetchData = useCallback(async () => {
         setLoading(true);
+    
         try {
             const response = await axios.get("https://cms.samespace.com/items/songs");
             const result = response.data.data;
@@ -23,7 +25,9 @@ export const DataContextProvider = ({ children }) => {
             setData([]);
         }
         finally {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+            },10000);
         }
     }, [setData])
 

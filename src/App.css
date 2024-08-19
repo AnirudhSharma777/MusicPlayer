@@ -43,7 +43,7 @@
 
 
 /* From Uiverse.io by Yaya12085 */ 
-.button {
+.button1 {
   display: flex;
   background-color: #00DA5A;
   color: #ffffff;
@@ -62,11 +62,11 @@
   transition: .6s ease;
 }
 
-.button svg {
+.button1 svg {
   height: 30px;
 }
 
-.button:hover {
+.button1:hover {
   box-shadow: none;
 }
 
