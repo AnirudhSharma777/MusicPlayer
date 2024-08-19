@@ -4,10 +4,12 @@ import App from './App.jsx'
 import './index.css'
 import { DataContextProvider } from './context/ApiContext.jsx'
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <DataContextProvider>
-      <App />
-    </DataContextProvider>
+    
+      <DataContextProvider>
+        <App />
+      </DataContextProvider>
   </StrictMode>
 )

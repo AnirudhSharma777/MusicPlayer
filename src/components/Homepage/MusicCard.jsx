@@ -1,7 +1,11 @@
 import React, { useContext, useEffect } from 'react';
+import * as fac from 'fast-average-color';
+import { FastAverageColor } from 'fast-average-color';
 import { MusicPlayerContext } from '../../context/ControlContext';
 import { FaStepBackward, FaStepForward, FaPause, FaPlay } from 'react-icons/fa';
 import { PiDotsThreeOutlineVertical } from "react-icons/pi";
+import { DataContext } from '../../context/ApiContext';
+
 
 const MusicCard = () => {
     const {
@@ -18,6 +22,31 @@ const MusicCard = () => {
         handleLoadedMetadata
     } = useContext(MusicPlayerContext);
 
+    const { setBgColor } = useContext(DataContext);
+    const fac = new FastAverageColor();
+
+    useEffect(() => {
+        if (currentTrack && currentTrack.cover) {
+            const coverImage = `https://cms.samespace.com/assets/${currentTrack.cover}`;
+    
+            const extractColors = async () => {
+                try {
+                    const color1 = await fac.getColorAsync(coverImage);
+                    // const color2 = await fac.getColorAsync(coverImage, { left: 0, top: 0, width: coverImage.width / 2, height: coverImage.height });
+                    // const color3 = await fac.getColorAsync(coverImage, { left: coverImage.width / 2, top: 0, width: coverImage.width / 2, height: coverImage.height });
+                    
+                    // Do something with color1, color2, color3
+                    setBgColor([color1.rgba, color1.rgba, color1.rgba]);
+                } catch (error) {
+                    console.error(error);
+                }
+            };
+    
+            extractColors();
+        }    
+    }, [currentTrack]);
+
+
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
@@ -31,7 +60,7 @@ const MusicCard = () => {
     }, [audioRef, handleTimeUpdate, handleLoadedMetadata]);
 
     // Log currentTrack to verify if it's being set correctly
-    console.log("Current track:", currentTrack);
+    // console.log("Current track:", currentTrack);
 
     return (
         <div className='flex justify-center'>
@@ -42,8 +71,8 @@ const MusicCard = () => {
                             <h1 className='text-4xl text-white font-bold'>{currentTrack.name}</h1>
                             <p className='text-[18px] font-semibold text-neutral-500'>{currentTrack.artist}</p>
                         </div>
-                        <div className='p-3 mb-5 w-full max-h-30'>
-                            <img className='rounded shadow over-cover' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
+                        <div className='p-3 mb-1 w-full  h-[350px]'>
+                            <img className='rounded shadow object-cover h-full ' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
                         </div>
                         <div className="flex items-center w-full justify-between">
                             <span className="text-white mr-3 ml-5">{formatTime(currentTime)}</span>
@@ -62,7 +91,7 @@ const MusicCard = () => {
                             <div className='flex justify-between p-4 items-center'>
                                 <PiDotsThreeOutlineVertical size={28} className='text-white cursor-pointer' />
                                 <div className='flex flex-row justify-center gap-4 ml-4'>
-                                    <button  className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
+                                    <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
                                         <FaStepBackward />
                                     </button>
                                     <button
@@ -71,7 +100,7 @@ const MusicCard = () => {
                                     >
                                         {isPlaying ? <FaPause /> : <FaPlay />}
                                     </button>
-                                    <button  className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
+                                    <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
                                         <FaStepForward />
                                     </button>
                                 </div>

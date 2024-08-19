@@ -7,7 +7,8 @@ export const DataContextProvider = ({ children }) => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    // const [song, setSong] = useState([])
+    const [bgColor, setBgColor] = useState([]);
+    
     
 
     const fetchData = useCallback(async () => {
@@ -15,23 +16,11 @@ export const DataContextProvider = ({ children }) => {
         try {
             const response = await axios.get("https://cms.samespace.com/items/songs");
             const result = response.data.data;
-            setData(result);
-            // const songList = result.map((ele) => ({
-            //     name: ele.name || '',
-            //     artist: ele.artist || '',
-            //     album: ele.album || '',
-            //     duration: ele.duration || '',
-            //     image: `https://cms.samespace.com/assets/${ele.cover}` || ''
-            // }));
-
-            // setSong(songList);
-
-            
+            setData(result);          
 
         } catch (e) {
             console.log(e);
             setData([]);
-            // setSong([]);
         }
         finally {
             setLoading(false);
@@ -45,6 +34,8 @@ export const DataContextProvider = ({ children }) => {
         loading,
         setLoading,
         fetchData,
+        bgColor,
+        setBgColor
     }
     return (
         <DataContext.Provider value={Value}>

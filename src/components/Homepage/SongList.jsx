@@ -14,7 +14,7 @@ const SongList = () => {
   };
 
   return (
-    <div className="px-12 py-8 -ml-3 sm:ml-0">
+    <div className="px-12 py-8 -ml-3 sm:ml-0 h-full w-full">
       <div className={`${!toggle ? 'text-white' : 'text-neutral-500'} text-xl font-semibold flex space-x-5 mb-4`}>
         <h1>For You</h1>
         <h1 
