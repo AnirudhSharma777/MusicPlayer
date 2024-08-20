@@ -1,4 +1,4 @@
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState, useRef, useCallback } from 'react';
 
 export const MusicPlayerContext = createContext();
 
@@ -12,8 +12,10 @@ export const MusicPlayerProvider = ({ children }) => {
     const [currentSongId, setCurrentSongId] = useState(null);
     const [progress, setProgress] = useState(0);
     const [currentAudio, setCurrentAudio] = useState(null);
+    const [playlist, setPlaylist] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(-1);
 
-    const playSong = (song) => {
+    const playSong = useCallback((song) => {
         if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current.currentTime = 0;
@@ -26,6 +28,7 @@ export const MusicPlayerProvider = ({ children }) => {
 
         setCurrentTrack({ ...song, duration: audio.duration, id: song.id });
         setCurrentAudio(audio);
+        setCurrentIndex(playlist.findIndex(track => track.id === song.id));
 
         audio.addEventListener('timeupdate', () => {
             setProgress(audio.currentTime);
@@ -35,8 +38,9 @@ export const MusicPlayerProvider = ({ children }) => {
             setProgress(0);
             setCurrentTrack(null);
             setCurrentAudio(null);
+            handleNextSong(); // Automatically play the next song when the current song ends
         });
-    };
+    }, [volume, playlist]);
 
     const handleSeek = (e) => {
         const newTime = e.target.value;
@@ -45,28 +49,6 @@ export const MusicPlayerProvider = ({ children }) => {
             setProgress(newTime);
         }
     };
-
-
-
-    {/* const playTrack = (track) => {
-    //     setCurrentTrack(track);
-    //     setIsPlaying(true);
-    // };
-
-    // const pauseTrack = () => {
-    //     setIsPlaying(false);
-    // };
-
-    // const nextTrack = (nextTrack) => {
-    //     setCurrentTrack(nextTrack);
-    //     setIsPlaying(true);
-    // };
-
-    // const previousTrack = (prevTrack) => {
-    //     setCurrentTrack(prevTrack);
-    //     setIsPlaying(true);
-    // };
-    */}
 
     const adjustVolume = (vol) => {
         setVolume(vol);
@@ -78,9 +60,9 @@ export const MusicPlayerProvider = ({ children }) => {
     const handlePlayPause = () => {
         const audio = audioRef.current;
         if (isPlaying) {
-            audio.pause();
-        } else {
             audio.play();
+        } else {
+            audio.pause();
         }
         setIsPlaying(!isPlaying);
     };
@@ -113,11 +95,32 @@ export const MusicPlayerProvider = ({ children }) => {
         }
     };
 
+    const handlePreviousSong = () => {
+        if (currentIndex > 0) {
+            const previousSong = playlist[currentIndex - 1];
+            playSong(previousSong);
+        }
+    };
+
+    const handleNextSong = () => {
+        if (currentIndex < playlist.length - 1) {
+            const nextSong = playlist[currentIndex + 1];
+            playSong(nextSong);
+        }
+    };
+
+    const setPlaylistAndPlay = (newPlaylist, startIndex = 0) => {
+        setPlaylist(newPlaylist);
+        setCurrentIndex(startIndex);
+        if (newPlaylist.length > 0) {
+            playSong(newPlaylist[startIndex]);
+        }
+    };
+
     return (
         <MusicPlayerContext.Provider value={{
             isPlaying,
             currentTrack,
-           
             volume,
             adjustVolume,
             handleVolumeChange,
@@ -133,7 +136,10 @@ export const MusicPlayerProvider = ({ children }) => {
             playSong,
             handleSeek,
             progress,
-            currentSongId
+            currentSongId,
+            handlePreviousSong,
+            handleNextSong,
+            setPlaylistAndPlay
         }}>
             {children}
         </MusicPlayerContext.Provider>

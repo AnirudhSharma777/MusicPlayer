@@ -21,7 +21,7 @@ const SongItem = ({ item, playSong, isActive }) => {
         </div>
         <div>
           <h4 className='text-white text-xl'>{item.name}</h4>
-          <p className='text-neutral-500 text-[15px]'>{item.artist}</p>
+          <p className='text-neutral-300 text-[15px]'>{item.artist}</p>
         </div>
       </div>
       <div className={`text-neutral-300 text-[1rem]   `}>

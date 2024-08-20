@@ -7,11 +7,9 @@ import {
     FaPause,
     FaPlay,
 } from 'react-icons/fa';
-import { FaRepeat, FaShuffle } from "react-icons/fa6";
-import { PiDotsThreeOutlineBold } from "react-icons/pi";
+import { FaRepeat, FaShuffle } from 'react-icons/fa6';
+import { PiDotsThreeOutlineBold } from 'react-icons/pi';
 import { DataContext } from '../../context/ApiContext';
-
-
 
 const MusicCard = () => {
     const {
@@ -25,10 +23,16 @@ const MusicCard = () => {
         duration,
         handleSliderChange,
         handleTimeUpdate,
-        handleLoadedMetadata
+        handleLoadedMetadata,
+        shuffle,
+        repeat,
+        toggleShuffle,
+        toggleRepeat,
+        handlePreviousSong,
+        handleNextSong
     } = useContext(MusicPlayerContext);
 
-    const { setBgColor, bgColor } = useContext(DataContext);
+    const { setBgColor } = useContext(DataContext);
     const fac = new FastAverageColor();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -53,7 +57,6 @@ const MusicCard = () => {
         }
     }, [currentTrack]);
 
-
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
@@ -66,7 +69,6 @@ const MusicCard = () => {
         }
     }, [audioRef, handleTimeUpdate, handleLoadedMetadata]);
 
-
     return (
         <div className='flex justify-center'>
             <div className='flex flex-col justify-center gap-3 pt-6'>
@@ -74,10 +76,16 @@ const MusicCard = () => {
                     <>
                         <div className='flex justify-start flex-col gap-2'>
                             <h1 className='text-4xl text-white font-bold'>{currentTrack.name}</h1>
-                            <p className='text-[18px] font-semibold text-neutral-500'>{currentTrack.artist}</p>
+                            <p className='text-[18px] font-semibold text-neutral-300'>{currentTrack.artist}</p>
                         </div>
-                        <div className='p-3  w-full  h-[350px]'>
-                            <img className='rounded shadow object-cover h-full ' src={`https://cms.samespace.com/assets/${currentTrack.cover}`} alt="" width={400} height={400} />
+                        <div className='p-3 w-full h-[350px]'>
+                            <img
+                                className='rounded shadow object-cover h-full'
+                                src={`https://cms.samespace.com/assets/${currentTrack.cover}`}
+                                alt=""
+                                width={400}
+                                height={400}
+                            />
                         </div>
                         <div className="flex items-center w-full justify-between">
                             <span className="text-white mr-3 ml-5">{formatTime(currentTime)}</span>
@@ -92,33 +100,53 @@ const MusicCard = () => {
                             />
                             <span className="text-white ml-2 mr-4">{formatTime(duration)}</span>
                         </div>
-                        <div className=''>
+                        <div>
                             <div className='flex justify-between p-3 items-center'>
-                                <div>
-                                    <PiDotsThreeOutlineBold size={28} className='text-white cursor-pointer relative' onClick={toggleComponent} />
+                                <div className=''>
+                                    <PiDotsThreeOutlineBold
+                                        size={28}
+                                        className='text-white cursor-pointer relative '
+                                        onClick={toggleComponent}
+                                    />
                                     {isOpen && (
                                         <div
-                                            className='absolute bottom-16  p-2 rounded-md shadow-lg border border-white'
+                                            className='absolute bottom-16 p-2 rounded-md shadow-lg border border-white'
                                             style={{ zIndex: 10 }}
                                         >
                                             <div className='flex flex-row gap-1'>
-                                                <button className='rounded-full shadow bg-white p-2'><FaShuffle size={18} /></button>
-                                                <button  className='rounded-full shadow bg-white p-2'> <FaRepeat size={18} /></button>
+                                                <button
+                                                    onClick={toggleShuffle}
+                                                    className={`rounded-full shadow p-2 ${shuffle ? 'bg-green-400' : 'bg-white'}`}
+                                                >
+                                                    <FaShuffle size={18} color={shuffle ? 'white' : 'black'} />
+                                                </button>
+                                                <button
+                                                    onClick={toggleRepeat}
+                                                    className={`rounded-full shadow p-2 ${repeat ? 'bg-green-400' : 'bg-white'}`}
+                                                >
+                                                    <FaRepeat size={18} color={repeat ? 'white' : 'black'} />
+                                                </button>
                                             </div>
                                         </div>
                                     )}
                                 </div>
                                 <div className='flex flex-row justify-center gap-4 ml-4 mt-4'>
-                                    <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
+                                    <button
+                                        onClick={handlePreviousSong}
+                                        className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black"
+                                    >
                                         <FaStepBackward />
                                     </button>
                                     <button
                                         onClick={handlePlayPause}
                                         className={`p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black ${isPlaying ? 'bg-gray-700' : 'bg-green-500'}`}
                                     >
-                                        {isPlaying ? <FaPause /> : <FaPlay />}
+                                        {isPlaying ? <FaPlay /> : <FaPause />}
                                     </button>
-                                    <button className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black">
+                                    <button
+                                        onClick={handleNextSong}
+                                        className="p-5 rounded-full border-2 border-green-400 hover:border-white bg-white hover:bg-green-400 text-black"
+                                    >
                                         <FaStepForward />
                                     </button>
                                 </div>
